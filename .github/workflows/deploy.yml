@@ -37,7 +37,7 @@ jobs:
           script: |
             cd /var/www/ameizze
             git pull origin main
-            npm ci --omit=dev
+            npm ci
             npm run build
             pm2 restart ameizze
             pm2 save
