@@ -3,12 +3,45 @@
 import Link from "next/link";
 import { useCart } from "@/store/cart";
 import { formatPrice, type Product } from "@/lib/products";
-import { ShoppingCart, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { useState } from "react";
+
+const RATINGS: Record<string, { score: number; count: number }> = {
+  prod_001: { score: 4.8, count: 142 },
+  prod_002: { score: 4.6, count: 89 },
+  prod_003: { score: 4.9, count: 67 },
+  prod_004: { score: 4.7, count: 112 },
+  prod_005: { score: 4.5, count: 54 },
+  prod_006: { score: 4.8, count: 78 },
+};
+
+function Stars({ score }: { score: number }) {
+  return (
+    <div className="flex gap-0.5">
+      {[1, 2, 3, 4, 5].map((n) => (
+        <svg
+          key={n}
+          className={`h-3.5 w-3.5 ${
+            score >= n
+              ? "text-[#B8976A]"
+              : score >= n - 0.5
+              ? "text-[#D4BA8A]"
+              : "text-[#E5E1D8]"
+          }`}
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
 
 export default function ProductCard({ product }: { product: Product }) {
   const addItem = useCart((s) => s.addItem);
   const [added, setAdded] = useState(false);
+  const rating = RATINGS[product.id];
 
   function handleAdd(e: React.MouseEvent) {
     e.preventDefault();
@@ -20,54 +53,58 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group relative flex flex-col rounded-xl border border-[#27272a] bg-[#18181b] overflow-hidden hover:border-[#f97316]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#f97316]/5"
+      className="group flex flex-col bg-white border border-[#E5E1D8] rounded-2xl overflow-hidden hover:shadow-lg hover:shadow-[#1A1A1A]/6 transition-all duration-300"
     >
-      {product.badge && (
-        <span className="absolute top-3 left-3 z-10 rounded-full bg-[#f97316] px-2.5 py-0.5 text-xs font-semibold text-white">
-          {product.badge}
-        </span>
-      )}
-
-      <div className="aspect-square bg-[#27272a] flex items-center justify-center overflow-hidden">
-        <div className="text-6xl select-none">
-          {product.category === "Cable Management" ? "🔌" :
-           product.category === "Organization" ? "🗂️" : "🖥️"}
+      {/* Image placeholder */}
+      <div className="relative aspect-square bg-[#F0EDE6] flex items-center justify-center overflow-hidden">
+        {product.badge && (
+          <span className="absolute top-3 left-3 z-10 rounded-full bg-[#1A1A1A] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
+            {product.badge}
+          </span>
+        )}
+        <div className="w-1/2 h-1/2 rounded-xl bg-[#E5E1D8] flex items-center justify-center">
+          <span className="text-[10px] font-medium uppercase tracking-widest text-[#B8976A]">
+            Photo
+          </span>
         </div>
       </div>
 
-      <div className="flex flex-col flex-1 p-4 gap-3">
-        <div>
-          <p className="text-xs text-[#71717a] mb-1">{product.category}</p>
-          <h3 className="font-semibold text-[#fafafa] group-hover:text-[#f97316] transition-colors line-clamp-1">
-            {product.name}
-          </h3>
-          <p className="text-sm text-[#71717a] mt-1 line-clamp-2">
-            {product.description}
-          </p>
-        </div>
+      {/* Info */}
+      <div className="flex flex-col flex-1 p-5 gap-2">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#B8976A]">
+          {product.category}
+        </p>
+        <h3 className="text-sm font-semibold text-[#1A1A1A] leading-snug line-clamp-2 group-hover:text-[#B8976A] transition-colors">
+          {product.name}
+        </h3>
 
-        <div className="flex items-center justify-between mt-auto pt-2">
-          <span className="text-lg font-bold text-[#fafafa]">
+        {rating && (
+          <div className="flex items-center gap-2">
+            <Stars score={rating.score} />
+            <span className="text-[11px] text-[#6B6866]">
+              {rating.score} ({rating.count})
+            </span>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between mt-auto pt-3">
+          <span className="text-base font-bold text-[#1A1A1A]">
             {formatPrice(product.price)}
           </span>
           <button
             onClick={handleAdd}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-200 ${
+            className={`rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-200 ${
               added
-                ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                : "bg-[#f97316] text-white hover:bg-[#ea6c0a]"
+                ? "bg-[#F0EDE6] text-[#6B6866]"
+                : "bg-[#1A1A1A] text-white hover:bg-[#333330]"
             }`}
           >
             {added ? (
-              <>
-                <Check className="h-3.5 w-3.5" />
-                Added
-              </>
+              <span className="flex items-center gap-1.5">
+                <Check className="h-3 w-3" /> Added
+              </span>
             ) : (
-              <>
-                <ShoppingCart className="h-3.5 w-3.5" />
-                Add
-              </>
+              "Add to Cart"
             )}
           </button>
         </div>

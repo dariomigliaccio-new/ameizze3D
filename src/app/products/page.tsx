@@ -4,8 +4,8 @@ import ProductCard from "@/components/ProductCard";
 import { products } from "@/lib/products";
 
 export const metadata = {
-  title: "Shop — Ameizze 3D",
-  description: "Browse all premium 3D printed utility products.",
+  title: "Shop — Ameizze",
+  description: "Browse all premium 3D printed desk accessories.",
 };
 
 export default function ProductsPage() {
@@ -14,31 +14,39 @@ export default function ProductsPage() {
   return (
     <>
       <Header />
-      <main className="flex-1 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-10">
-          <p className="text-xs text-[#f97316] font-semibold uppercase tracking-widest mb-2">
-            Collection
-          </p>
-          <h1 className="text-4xl font-bold tracking-tight">All Products</h1>
-          <p className="text-[#71717a] mt-2">
-            {products.length} products · Free shipping over $40
-          </p>
+      <main className="flex-1">
+        {/* Page header */}
+        <div className="border-b border-[#E5E1D8] bg-[#F0EDE6]">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#B8976A] mb-2">
+              Collection
+            </p>
+            <h1 className="text-4xl font-bold tracking-tight">All Products</h1>
+            <p className="text-[#6B6866] mt-2 text-sm">
+              {products.length} products &middot; Free shipping over $40
+            </p>
+          </div>
         </div>
 
-        {categories.map((cat) => (
-          <div key={cat} className="mb-14">
-            <h2 className="text-lg font-semibold mb-5 pb-3 border-b border-[#27272a]">
-              {cat}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products
-                .filter((p) => p.category === cat)
-                .map((p) => (
-                  <ProductCard key={p.id} product={p} />
-                ))}
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+          {categories.map((cat) => (
+            <div key={cat} className="mb-16">
+              <div className="flex items-center gap-4 mb-7">
+                <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6B6866]">
+                  {cat}
+                </h2>
+                <div className="flex-1 border-t border-[#E5E1D8]" />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {products
+                  .filter((p) => p.category === cat)
+                  .map((p) => (
+                    <ProductCard key={p.id} product={p} />
+                  ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </main>
       <Footer />
     </>
