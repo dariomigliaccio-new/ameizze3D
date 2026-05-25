@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Order {
+  id                  String   @id @default(cuid())
+  stripeSessionId     String   @unique
+  customerName        String
+  customerEmail       String
+  addressLine1        String
+  addressLine2        String   @default("")
+  addressCity         String
+  addressState        String
+  addressZip          String
+  addressCountry      String   @default("US")
+  items               String
+  total               Int
+  status              String   @default("pending")
+  labelUrl            String?
+  trackingNumber      String?
+  carrier             String?
+  shippoTransactionId String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Product {
+  id              String  @id
+  slug            String  @unique
+  name            String
+  price           Int
+  description     String
+  longDescription String
+  image           String  @default("")
+  category        String
+  badge           String  @default("")
+  features        String
+  material        String
+  dimensions      String
+  active          Boolean @default(true)
+}
+
+model Setting {
+  key   String @id
+  value String
+}

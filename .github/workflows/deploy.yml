@@ -26,6 +26,13 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          DATABASE_URL: "file:./prisma/prod.db"
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD_HASH: ${{ secrets.ADMIN_PASSWORD_HASH }}
+          ADMIN_JWT_SECRET: ${{ secrets.ADMIN_JWT_SECRET }}
 
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v1
@@ -38,6 +45,7 @@ jobs:
             cd /var/www/ameizze
             git pull origin main
             npm ci
+            npx prisma migrate deploy
             npm run build
             pm2 restart ameizze
             pm2 save
