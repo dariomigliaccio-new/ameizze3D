@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import FadeIn from "@/components/FadeIn";
+import { Button } from "@/components/ui/button";
 import { products } from "@/lib/products";
 import { ArrowRight, Truck, RotateCcw, Leaf, Award } from "lucide-react";
 
@@ -35,19 +36,22 @@ export default function HomePage() {
               </FadeIn>
               <FadeIn delay={0.3}>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Link
-                    href="/products"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1A1A1A] px-8 py-4 text-sm font-semibold text-white hover:bg-[#333330] transition-colors"
+                  <Button
+                    size="lg"
+                    className="bg-[#1A1A1A] hover:bg-[#333330] text-white rounded-xl px-8 h-12"
+                    render={<Link href="/products" />}
                   >
                     Shop All Products
                     <ArrowRight className="h-4 w-4" />
-                  </Link>
-                  <Link
-                    href="/#about"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#E5E1D8] bg-white px-8 py-4 text-sm font-semibold text-[#1A1A1A] hover:bg-[#F9F8F6] transition-colors"
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="rounded-xl px-8 h-12 border-[#E5E1D8] bg-white"
+                    render={<Link href="/#about" />}
                   >
                     Our Story
-                  </Link>
+                  </Button>
                 </div>
               </FadeIn>
             </div>
@@ -88,12 +92,13 @@ export default function HomePage() {
                   Best Sellers
                 </h2>
               </div>
-              <Link
-                href="/products"
-                className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-[#6B6866] hover:text-[#1A1A1A] transition-colors"
+              <Button
+                variant="ghost"
+                className="hidden sm:inline-flex text-[#6B6866]"
+                render={<Link href="/products" />}
               >
                 View all <ArrowRight className="h-4 w-4" />
-              </Link>
+              </Button>
             </div>
           </FadeIn>
 
@@ -106,12 +111,9 @@ export default function HomePage() {
           </div>
 
           <div className="mt-8 text-center sm:hidden">
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#1A1A1A]"
-            >
+            <Button variant="link" render={<Link href="/products" />}>
               View all products <ArrowRight className="h-4 w-4" />
-            </Link>
+            </Button>
           </div>
         </section>
 
@@ -128,14 +130,15 @@ export default function HomePage() {
                     No cheap plastic.<br />Ever.
                   </h2>
                   <p className="text-[#6B6866] leading-relaxed mb-6">
-                    Every product is printed with professional-grade PLA+ or PETG filament — materials engineered for durability, not disposability. Rigid where it needs to be, flexible where it counts.
+                    Every product is printed with professional-grade PLA+ or PETG filament — materials engineered for durability, not disposability.
                   </p>
-                  <Link
-                    href="/products"
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-[#1A1A1A] underline underline-offset-4 decoration-[#B8976A] hover:decoration-[#1A1A1A] transition-colors"
+                  <Button
+                    variant="link"
+                    className="px-0 text-[#1A1A1A] underline-offset-4 decoration-[#B8976A]"
+                    render={<Link href="/products" />}
                   >
                     Explore the collection <ArrowRight className="h-4 w-4" />
-                  </Link>
+                  </Button>
                 </div>
               </FadeIn>
               <FadeIn direction="left" delay={0.1}>
@@ -187,12 +190,13 @@ export default function HomePage() {
               <p className="text-[#9A9896] mb-8 max-w-md mx-auto">
                 Browse our full collection and find the perfect addition to your desk.
               </p>
-              <Link
-                href="/products"
-                className="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 text-sm font-semibold text-[#1A1A1A] hover:bg-[#F0EDE6] transition-colors"
+              <Button
+                size="lg"
+                className="bg-white text-[#1A1A1A] hover:bg-[#F0EDE6] rounded-xl px-8 h-12"
+                render={<Link href="/products" />}
               >
                 Shop All Products <ArrowRight className="h-4 w-4" />
-              </Link>
+              </Button>
             </FadeIn>
           </div>
         </section>

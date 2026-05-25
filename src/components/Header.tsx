@@ -2,12 +2,23 @@
 
 import Link from "next/link";
 import { useCart } from "@/store/cart";
-import { ShoppingCart, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { ShoppingCart, Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
+
+const NAV = [
+  { href: "/products", label: "Shop" },
+  { href: "/#about", label: "About" },
+  { href: "/#contact", label: "Contact" },
+];
 
 export default function Header() {
   const totalItems = useCart((s) => s.totalItems());
-  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#E5E1D8] bg-[#F9F8F6]/95 backdrop-blur-md">
@@ -23,11 +34,7 @@ export default function Header() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8">
-            {[
-              { href: "/products", label: "Shop" },
-              { href: "/#about", label: "About" },
-              { href: "/#contact", label: "Contact" },
-            ].map(({ href, label }) => (
+            {NAV.map(({ href, label }) => (
               <Link
                 key={label}
                 href={href}
@@ -40,50 +47,45 @@ export default function Header() {
 
           <div className="flex items-center gap-2">
             {/* Cart */}
-            <Link
-              href="/cart"
-              className="relative flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] hover:bg-[#F0EDE6] transition-colors"
-            >
-              <ShoppingCart className="h-5 w-5" />
-              <span className="hidden sm:inline text-sm">Cart</span>
+            <Link href="/cart" className="relative">
+              <Button variant="ghost" size="sm">
+                <ShoppingCart className="h-5 w-5" />
+                <span className="hidden sm:inline">Cart</span>
+              </Button>
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#1A1A1A] text-[10px] font-bold text-white">
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#1A1A1A] text-[10px] font-bold text-white pointer-events-none">
                   {totalItems}
                 </span>
               )}
             </Link>
 
-            {/* Mobile menu toggle */}
-            <button
-              className="md:hidden rounded-lg p-2 hover:bg-[#F0EDE6] transition-colors"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
-            >
-              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
+            {/* Mobile menu */}
+            <Sheet>
+              <SheetTrigger
+                className="md:hidden"
+                render={
+                  <Button variant="ghost" size="icon-sm" />
+                }
+              >
+                <Menu className="h-5 w-5" />
+              </SheetTrigger>
+              <SheetContent side="right" className="w-64 bg-[#F9F8F6] p-6">
+                <nav className="flex flex-col gap-6 mt-8">
+                  {NAV.map(({ href, label }) => (
+                    <SheetClose
+                      key={label}
+                      render={<Link href={href} />}
+                      className="text-base font-medium text-[#1A1A1A] hover:text-[#B8976A] transition-colors"
+                    >
+                      {label}
+                    </SheetClose>
+                  ))}
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
-
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="md:hidden border-t border-[#E5E1D8] bg-[#F9F8F6] px-4 py-4 flex flex-col gap-4">
-          {[
-            { href: "/products", label: "Shop" },
-            { href: "/#about", label: "About" },
-            { href: "/#contact", label: "Contact" },
-          ].map(({ href, label }) => (
-            <Link
-              key={label}
-              href={href}
-              className="text-sm text-[#6B6866] hover:text-[#1A1A1A] transition-colors"
-              onClick={() => setMenuOpen(false)}
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
-      )}
     </header>
   );
 }

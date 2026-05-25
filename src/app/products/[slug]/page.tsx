@@ -9,6 +9,8 @@ import { getProduct, formatPrice, products } from "@/lib/products";
 import { useCart } from "@/store/cart";
 import { ShoppingCart, Check, ArrowLeft, Package, Ruler } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export default function ProductPage({
   params,
@@ -36,13 +38,14 @@ export default function ProductPage({
       <Header />
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-          <Link
-            href="/products"
-            className="inline-flex items-center gap-1.5 text-sm text-[#6B6866] hover:text-[#1A1A1A] mb-10 transition-colors"
+          <Button
+            variant="ghost"
+            className="mb-10 text-[#6B6866] px-0 hover:bg-transparent hover:text-[#1A1A1A]"
+            render={<Link href="/products" />}
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Shop
-          </Link>
+          </Button>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
             {/* Image */}
@@ -57,9 +60,9 @@ export default function ProductPage({
             {/* Info */}
             <div className="flex flex-col">
               {product.badge && (
-                <span className="mb-5 inline-flex w-fit rounded-full bg-[#1A1A1A] px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
+                <Badge className="mb-5 w-fit bg-[#1A1A1A] text-white hover:bg-[#1A1A1A] uppercase tracking-wider">
                   {product.badge}
-                </span>
+                </Badge>
               )}
 
               <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#B8976A] mb-2">
@@ -97,12 +100,13 @@ export default function ProductPage({
                 </div>
               </div>
 
-              <button
+              <Button
                 onClick={handleAdd}
-                className={`flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-sm font-semibold uppercase tracking-wider transition-all duration-200 ${
+                size="lg"
+                className={`rounded-xl h-12 uppercase tracking-wider text-sm font-semibold ${
                   added
-                    ? "bg-[#F0EDE6] text-[#6B6866]"
-                    : "bg-[#1A1A1A] text-white hover:bg-[#333330]"
+                    ? "bg-[#F0EDE6] text-[#6B6866] hover:bg-[#F0EDE6]"
+                    : "bg-[#1A1A1A] hover:bg-[#333330] text-white"
                 }`}
               >
                 {added ? (
@@ -116,7 +120,7 @@ export default function ProductPage({
                     Add to Cart
                   </>
                 )}
-              </button>
+              </Button>
 
               <p className="mt-4 text-center text-xs text-[#6B6866]">
                 Free shipping on orders over $40 &middot; 30-day returns

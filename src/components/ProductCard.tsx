@@ -6,6 +6,8 @@ import { formatPrice, type Product } from "@/lib/products";
 import { Check } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const RATINGS: Record<string, { score: number; count: number }> = {
   prod_001: { score: 4.8, count: 142 },
@@ -56,65 +58,67 @@ export default function ProductCard({ product }: { product: Product }) {
       whileHover={{ y: -4 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
     >
-    <Link
-      href={`/products/${product.slug}`}
-      className="group flex flex-col bg-white border border-[#E5E1D8] rounded-2xl overflow-hidden hover:shadow-lg hover:shadow-[#1A1A1A]/6 transition-shadow duration-300"
-    >
-      {/* Image placeholder */}
-      <div className="relative aspect-square bg-[#F0EDE6] flex items-center justify-center overflow-hidden">
-        {product.badge && (
-          <span className="absolute top-3 left-3 z-10 rounded-full bg-[#1A1A1A] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
-            {product.badge}
-          </span>
-        )}
-        <div className="w-1/2 h-1/2 rounded-xl bg-[#E5E1D8] flex items-center justify-center">
-          <span className="text-[10px] font-medium uppercase tracking-widest text-[#B8976A]">
-            Photo
-          </span>
-        </div>
-      </div>
-
-      {/* Info */}
-      <div className="flex flex-col flex-1 p-5 gap-2">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#B8976A]">
-          {product.category}
-        </p>
-        <h3 className="text-sm font-semibold text-[#1A1A1A] leading-snug line-clamp-2 group-hover:text-[#B8976A] transition-colors">
-          {product.name}
-        </h3>
-
-        {rating && (
-          <div className="flex items-center gap-2">
-            <Stars score={rating.score} />
-            <span className="text-[11px] text-[#6B6866]">
-              {rating.score} ({rating.count})
+      <Link
+        href={`/products/${product.slug}`}
+        className="group flex flex-col bg-white border border-[#E5E1D8] rounded-2xl overflow-hidden hover:shadow-lg hover:shadow-[#1A1A1A]/6 transition-shadow duration-300"
+      >
+        {/* Image placeholder */}
+        <div className="relative aspect-square bg-[#F0EDE6] flex items-center justify-center overflow-hidden">
+          {product.badge && (
+            <Badge className="absolute top-3 left-3 z-10 bg-[#1A1A1A] text-white hover:bg-[#1A1A1A]">
+              {product.badge}
+            </Badge>
+          )}
+          <div className="w-1/2 h-1/2 rounded-xl bg-[#E5E1D8] flex items-center justify-center">
+            <span className="text-[10px] font-medium uppercase tracking-widest text-[#B8976A]">
+              Photo
             </span>
           </div>
-        )}
-
-        <div className="flex items-center justify-between mt-auto pt-3">
-          <span className="text-base font-bold text-[#1A1A1A]">
-            {formatPrice(product.price)}
-          </span>
-          <button
-            onClick={handleAdd}
-            className={`rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-200 ${
-              added
-                ? "bg-[#F0EDE6] text-[#6B6866]"
-                : "bg-[#1A1A1A] text-white hover:bg-[#333330]"
-            }`}
-          >
-            {added ? (
-              <span className="flex items-center gap-1.5">
-                <Check className="h-3 w-3" /> Added
-              </span>
-            ) : (
-              "Add to Cart"
-            )}
-          </button>
         </div>
-      </div>
-    </Link>
+
+        {/* Info */}
+        <div className="flex flex-col flex-1 p-5 gap-2">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#B8976A]">
+            {product.category}
+          </p>
+          <h3 className="text-sm font-semibold text-[#1A1A1A] leading-snug line-clamp-2 group-hover:text-[#B8976A] transition-colors">
+            {product.name}
+          </h3>
+
+          {rating && (
+            <div className="flex items-center gap-2">
+              <Stars score={rating.score} />
+              <span className="text-[11px] text-[#6B6866]">
+                {rating.score} ({rating.count})
+              </span>
+            </div>
+          )}
+
+          <div className="flex items-center justify-between mt-auto pt-3">
+            <span className="text-base font-bold text-[#1A1A1A]">
+              {formatPrice(product.price)}
+            </span>
+            <Button
+              size="sm"
+              onClick={handleAdd}
+              variant={added ? "secondary" : "default"}
+              className={
+                added
+                  ? "text-[#6B6866]"
+                  : "bg-[#1A1A1A] hover:bg-[#333330] text-white uppercase tracking-wider text-xs"
+              }
+            >
+              {added ? (
+                <span className="flex items-center gap-1.5">
+                  <Check className="h-3 w-3" /> Added
+                </span>
+              ) : (
+                "Add to Cart"
+              )}
+            </Button>
+          </div>
+        </div>
+      </Link>
     </motion.div>
   );
 }

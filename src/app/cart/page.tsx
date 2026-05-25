@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/products";
 import { Trash2, ArrowRight, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, totalPrice } = useCart();
@@ -39,12 +40,12 @@ export default function CartPage() {
           <ShoppingBag className="h-14 w-14 text-[#E5E1D8]" />
           <h1 className="text-2xl font-bold">Your cart is empty</h1>
           <p className="text-[#6B6866] text-sm">Add some products to get started.</p>
-          <Link
-            href="/products"
-            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#1A1A1A] px-6 py-3 text-sm font-semibold text-white hover:bg-[#333330] transition-colors"
+          <Button
+            className="mt-4 bg-[#1A1A1A] hover:bg-[#333330] text-white rounded-xl px-6 h-11"
+            render={<Link href="/products" />}
           >
             Browse Products <ArrowRight className="h-4 w-4" />
-          </Link>
+          </Button>
         </main>
         <Footer />
       </>
@@ -79,31 +80,35 @@ export default function CartPage() {
                       </p>
                       <p className="font-semibold text-[#1A1A1A]">{product.name}</p>
                     </div>
-                    <button
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
                       onClick={() => removeItem(product.id)}
-                      className="text-[#6B6866] hover:text-red-500 transition-colors"
+                      className="text-[#6B6866] hover:text-red-500"
                     >
                       <Trash2 className="h-4 w-4" />
-                    </button>
+                    </Button>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-0 rounded-lg border border-[#E5E1D8]">
-                      <button
+                    <div className="flex items-center rounded-lg border border-[#E5E1D8] overflow-hidden">
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
                         onClick={() => updateQuantity(product.id, quantity - 1)}
-                        className="px-3 py-1.5 text-sm text-[#6B6866] hover:text-[#1A1A1A] transition-colors"
+                        className="rounded-none border-r border-[#E5E1D8] h-8 w-8"
                       >
                         −
-                      </button>
-                      <span className="px-3 py-1.5 text-sm font-semibold border-x border-[#E5E1D8]">
-                        {quantity}
-                      </span>
-                      <button
+                      </Button>
+                      <span className="px-4 text-sm font-semibold">{quantity}</span>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
                         onClick={() => updateQuantity(product.id, quantity + 1)}
-                        className="px-3 py-1.5 text-sm text-[#6B6866] hover:text-[#1A1A1A] transition-colors"
+                        className="rounded-none border-l border-[#E5E1D8] h-8 w-8"
                       >
                         +
-                      </button>
+                      </Button>
                     </div>
                     <p className="font-bold text-[#1A1A1A]">
                       {formatPrice(product.price * quantity)}
@@ -147,14 +152,14 @@ export default function CartPage() {
                 <span>{formatPrice(total)}</span>
               </div>
 
-              <button
+              <Button
                 onClick={handleCheckout}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#1A1A1A] px-6 py-4 text-sm font-semibold uppercase tracking-wider text-white hover:bg-[#333330] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#1A1A1A] hover:bg-[#333330] text-white rounded-xl h-12 uppercase tracking-wider text-xs font-semibold"
               >
                 {loading ? "Redirecting..." : "Checkout with Stripe"}
                 {!loading && <ArrowRight className="h-4 w-4" />}
-              </button>
+              </Button>
 
               <p className="text-center text-xs text-[#6B6866]">
                 Secure checkout &middot; Powered by Stripe

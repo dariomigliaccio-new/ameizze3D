@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { CheckCircle, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function SuccessPage() {
   const clearCart = useCart((s) => s.clearCart);
@@ -37,12 +38,13 @@ export default function SuccessPage() {
             business days.
           </p>
 
-          <Link
-            href="/products"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#1A1A1A] px-8 py-4 text-sm font-semibold uppercase tracking-wider text-white hover:bg-[#333330] transition-colors"
+          <Button
+            size="lg"
+            className="bg-[#1A1A1A] hover:bg-[#333330] text-white rounded-xl px-8 h-12 uppercase tracking-wider text-sm"
+            render={<Link href="/products" />}
           >
             Continue Shopping <ArrowRight className="h-4 w-4" />
-          </Link>
+          </Button>
         </div>
       </main>
       <Footer />
