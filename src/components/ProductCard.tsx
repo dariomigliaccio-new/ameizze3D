@@ -5,6 +5,7 @@ import { useCart } from "@/store/cart";
 import { formatPrice, type Product } from "@/lib/products";
 import { Check } from "lucide-react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const RATINGS: Record<string, { score: number; count: number }> = {
   prod_001: { score: 4.8, count: 142 },
@@ -51,9 +52,13 @@ export default function ProductCard({ product }: { product: Product }) {
   }
 
   return (
+    <motion.div
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+    >
     <Link
       href={`/products/${product.slug}`}
-      className="group flex flex-col bg-white border border-[#E5E1D8] rounded-2xl overflow-hidden hover:shadow-lg hover:shadow-[#1A1A1A]/6 transition-all duration-300"
+      className="group flex flex-col bg-white border border-[#E5E1D8] rounded-2xl overflow-hidden hover:shadow-lg hover:shadow-[#1A1A1A]/6 transition-shadow duration-300"
     >
       {/* Image placeholder */}
       <div className="relative aspect-square bg-[#F0EDE6] flex items-center justify-center overflow-hidden">
@@ -110,5 +115,6 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
     </Link>
+    </motion.div>
   );
 }
