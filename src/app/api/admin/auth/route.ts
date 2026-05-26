@@ -9,11 +9,13 @@ export async function POST(req: NextRequest) {
   const adminHash = process.env.ADMIN_PASSWORD_HASH;
 
   if (!adminEmail || !adminHash) {
-    return NextResponse.json({ error: "Admin not configured" }, { status: 500 });
+    return NextResponse.json({ error: "Admin not configured", emailSet: !!adminEmail, hashSet: !!adminHash }, { status: 500 });
   }
 
-  if (email !== adminEmail || !(await bcrypt.compare(password, adminHash))) {
-    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+  const emailMatch = email === adminEmail;
+  const passMatch = await bcrypt.compare(password, adminHash);
+  if (!emailMatch || !passMatch) {
+    return NextResponse.json({ error: "Invalid credentials", emailMatch, passMatch, gotEmail: email, envEmail: adminEmail }, { status: 401 });
   }
 
   const token = await signToken({ email });
