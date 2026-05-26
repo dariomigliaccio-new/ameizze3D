@@ -8,7 +8,7 @@ export default async function SettingsPage() {
   return (
     <div className="p-8 max-w-2xl">
       <h1 className="text-2xl font-bold text-[#1A1A1A] mb-2">Settings</h1>
-      <p className="text-sm text-[#6B6866] mb-8">Your address is used as the sender on USPS shipping labels.</p>
+      <p className="text-sm text-[#6B6866] mb-8">Manage your sender address, announcement bar, and discount modal.</p>
       <SettingsForm settings={settings} />
     </div>
   );

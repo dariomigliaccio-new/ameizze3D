@@ -41,6 +41,12 @@ async function main() {
     { key: "from_country", value: "US" },
     { key: "from_email", value: "hello@ameizze.com" },
     { key: "from_phone", value: "" },
+    { key: "promo_bar_active", value: "false" },
+    { key: "promo_bar_text", value: "" },
+    { key: "promo_modal_active", value: "false" },
+    { key: "promo_modal_title", value: "" },
+    { key: "promo_modal_body", value: "" },
+    { key: "promo_modal_code", value: "" },
   ];
 
   for (const s of defaults) {
