@@ -1,6 +1,10 @@
+import { createHash } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { signToken, cookieName, cookieOptions } from "@/lib/auth";
+
+function sha256(s: string) {
+  return createHash("sha256").update(s).digest("hex");
+}
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
@@ -9,13 +13,11 @@ export async function POST(req: NextRequest) {
   const adminHash = process.env.ADMIN_PASSWORD_HASH;
 
   if (!adminEmail || !adminHash) {
-    return NextResponse.json({ error: "Admin not configured", emailSet: !!adminEmail, hashSet: !!adminHash }, { status: 500 });
+    return NextResponse.json({ error: "Admin not configured" }, { status: 500 });
   }
 
-  const emailMatch = email === adminEmail;
-  const passMatch = await bcrypt.compare(password, adminHash);
-  if (!emailMatch || !passMatch) {
-    return NextResponse.json({ error: "Invalid credentials", emailMatch, passMatch, gotEmail: email, envEmail: adminEmail }, { status: 401 });
+  if (email !== adminEmail || sha256(password) !== adminHash) {
+    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
   const token = await signToken({ email });
