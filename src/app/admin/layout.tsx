@@ -1,13 +1,8 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth";
 import AdminSidebar from "./components/AdminSidebar";
 
 export const metadata = { title: "Ameizze Manager" };
 
-export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const session = await getSession();
-  if (!session) redirect("/admin/login");
-
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex bg-[#F5F5F5]">
       <AdminSidebar />
