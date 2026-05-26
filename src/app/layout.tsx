@@ -26,8 +26,13 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const rows = await db.setting.findMany();
-  const s = Object.fromEntries(rows.map((r) => [r.key, r.value]));
+  let s: Record<string, string> = {};
+  try {
+    const rows = await db.setting.findMany();
+    s = Object.fromEntries(rows.map((r) => [r.key, r.value]));
+  } catch {
+    // DB not ready yet — skip promo components
+  }
 
   const barActive = s.promo_bar_active === "true";
   const modalActive = s.promo_modal_active === "true";
